@@ -1,0 +1,105 @@
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+import { notification } from "ant-design-vue";
+import { useRouter } from "vue-router";
+
+import type { Login } from "@/types/auth";
+
+import AuthContent from "@/components/auth/AuthContent.vue";
+
+const router = useRouter();
+
+const formState = reactive<Login>({
+  login: "",
+  password: "",
+});
+
+const isLoading = ref(false);
+
+const onFinish = (event: any) => {
+  console.log("event", event);
+
+  if (!formState.login || !formState.password) {
+    notification({
+      message: "Ошибка",
+      description: "Логин и пароль обязательные поля",
+      placement: "topRight",
+    });
+    return;
+  }
+
+  router.push("/recovery");
+};
+
+const onSubmitFailed = (err: any) => {
+  console.error(err);
+  notification({
+    message: "Ошибка",
+    description: "Проверьте логин или пароль",
+    placement: "topRight",
+  });
+};
+</script>
+
+<template>
+  <div class="login-view">
+    <AuthContent title="Вход в систему ">
+      <a-form
+        :model="formState"
+        name="basic"
+        autocomplete="off"
+        layout="vertical"
+        @finish="onFinish"
+        @finishFailed="onFinishFailed"
+      >
+        <a-form-item
+          label="Логин"
+          name="login"
+          :rules="[{ required: true, message: 'Заполните логин!' }]"
+        >
+          <a-input v-model:value="formState.login" />
+        </a-form-item>
+
+        <a-form-item
+          label="Пароль"
+          name="password"
+          :rules="[
+            { required: true, message: 'Пожалуйста, заполните пароль!' },
+            { min: 6, message: 'Пароль должен быть не менее 6 символов' },
+          ]"
+        >
+          <a-input-password v-model:value="formState.password" />
+        </a-form-item>
+
+        <a-form-item class="login-view__recovery">
+          <router-link to="/recovery">Не помню пароль</router-link>
+        </a-form-item>
+
+        <a-form-item class="login-view__submit">
+          <a-button type="primary" html-type="submit" :loading="isLoading"
+            >Войти</a-button
+          >
+        </a-form-item>
+      </a-form>
+    </AuthContent>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.login-view {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e6f1ff;
+
+  &__recovery {
+    text-align: right;
+  }
+
+  &__submit {
+    text-align: center;
+  }
+}
+</style>
