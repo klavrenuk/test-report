@@ -32,22 +32,24 @@ onMounted(() => {
 
 <template>
   <div class="reports-view">
-    <div class="reports-view__filters">
-      <a-range-picker
-        v-model:value="dateRange"
-        format="DD-MM-YYYY"
-        placeholder="Выберите интервал дат"
-      />
-    </div>
+    <div class="app-container">
+      <div class="reports-view__filters">
+        <a-range-picker
+          v-model:value="dateRange"
+          format="DD-MM-YYYY"
+          placeholder="Выберите интервал дат"
+        />
+      </div>
 
-    <a-table
-      :columns="columnsReports"
-      :data-source="filteredData"
-      row-key="id"
-      bordered
-      pagination
-    >
-    </a-table>
+      <a-table
+        :columns="columnsReports"
+        :data-source="filteredData"
+        row-key="id"
+        bordered
+        pagination
+      >
+      </a-table>
+    </div>
   </div>
 </template>
 

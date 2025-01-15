@@ -49,9 +49,9 @@ onMounted(() => {
       </a-flex>
     </a-layout-header>
     <a-layout-content>
-      <main class="app-main">
+      <div class="app-main">
         <router-view />
-      </main>
+      </div>
     </a-layout-content>
   </a-layout>
 </template>
@@ -67,7 +67,5 @@ onMounted(() => {
 
 .app-main {
   padding: 0 1rem;
-  width: 100%;
-  max-width: 1200px;
 }
 </style>

@@ -40,7 +40,8 @@ const handleSubmit = () => {
   } catch (err) {
     console.error(err);
 
-    notification({
+    notification.open({
+      type: "error",
       message: "Ошибка",
       description: "Попробуйте еще раз",
       placement: "topRight",
@@ -72,7 +73,7 @@ const handleSubmit = () => {
           />
         </a-form-item>
 
-        <a-form-item class="login-view__submit">
+        <a-form-item>
           <a-button
             type="primary"
             @click="handleSubmit"
@@ -81,6 +82,10 @@ const handleSubmit = () => {
             html-type="submit"
             >Войти</a-button
           >
+        </a-form-item>
+
+        <a-form-item class="recovery-view__back">
+          <router-link to="/login">Вернуться назад</router-link>
         </a-form-item>
       </a-form>
 
@@ -95,7 +100,6 @@ const handleSubmit = () => {
         <a-form-item
           label="Пароль"
           name="password"
-          class="login-view__form-item"
           :rules="[
             { required: true, message: 'Пожалуйста, заполните пароль!' },
             { min: 6, message: 'Пароль должен быть не менее 6 символов' },
@@ -108,7 +112,7 @@ const handleSubmit = () => {
           />
         </a-form-item>
 
-        <a-form-item class="login-view__submit">
+        <a-form-item>
           <a-button
             type="primary"
             @click="handleSubmit"
@@ -118,7 +122,19 @@ const handleSubmit = () => {
             >Войти</a-button
           >
         </a-form-item>
+
+        <a-form-item class="recovery-view__back">
+          <router-link to="/login">Вернуться назад</router-link>
+        </a-form-item>
       </a-form>
     </AuthContent>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.recovery-view {
+  &__back {
+    text-align: center;
+  }
+}
+</style>

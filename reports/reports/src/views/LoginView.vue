@@ -28,7 +28,8 @@ const onSubmit = () => {
 const handleLogin = () => {
   try {
     if (!formState.login || !formState.password) {
-      notification({
+      notification.open({
+        type: "error",
         message: "Ошибка",
         description: "Логин и пароль обязательные поля",
         placement: "topRight",
@@ -43,7 +44,8 @@ const handleLogin = () => {
     router.push("/");
   } catch (err) {
     console.error(err);
-    notification({
+    notification.open({
+      type: "error",
       message: "Ошибка",
       description: "Проверьте логин или пароль",
       placement: "topRight",
@@ -55,7 +57,8 @@ const handleLogin = () => {
 
 const onSubmitFailed = (err: any) => {
   console.error(err);
-  notification({
+  notification.open({
+    type: "error",
     message: "Ошибка",
     description: "Проверьте логин или пароль",
     placement: "topRight",
@@ -68,7 +71,7 @@ const onSubmitFailed = (err: any) => {
     <AuthContent title="Вход в систему ">
       <a-form
         :model="formState"
-        name="basic"
+        name="auth"
         autocomplete="off"
         layout="vertical"
         @finish="onSubmit"
