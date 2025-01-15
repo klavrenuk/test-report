@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { useUser } from "@/stores/user";
+import { isAuthPage } from "@/utils/auth";
 
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
@@ -30,6 +32,23 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  console.log("to", to);
+  const userStore = useUser();
+
+  if (isAuthPage(to.path)) {
+    if (userStore.getUser) {
+      next({ path: "/" });
+    }
+  } else {
+    if (!userStore.getUser) {
+      next({ path: "/login" });
+    }
+  }
+
+  next();
 });
 
 export default router;
