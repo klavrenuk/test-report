@@ -16,19 +16,17 @@ const authPages = ["/login", "/recovery"];
 
 const isShowHeader = computed(() => !isAuthPage());
 
-const isAuthPage = () => {
-  if (!authPages.includes(route.path) && !userStore.getUser) {
-    return false;
-  }
-
-  return true;
-};
+const isAuthPage = () => authPages.includes(route.fullPath);
 
 const checkAuth = () => {
-  console.log("userStore", userStore.getUser);
-
-  if (!isAuthPage()) {
-    router.push("/login");
+  if (isAuthPage()) {
+    if (userStore.getUser) {
+      router.push("/");
+    }
+  } else {
+    if (!userStore.getUser) {
+      router.push("/login");
+    }
   }
 
   isShowPage.value = true;

@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "recovery",
     component: RecoveryView,
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    redirect: "/",
+  },
 ];
 
 const router = createRouter({

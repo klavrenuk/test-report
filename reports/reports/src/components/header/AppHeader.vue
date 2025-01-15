@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useUser } from "@/stores/user";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+const userStore = useUser();
+
 const handleLogout = () => {
-  console.log("logout");
+  userStore.logout();
+  router.push('/login');
 };
 </script>
 
