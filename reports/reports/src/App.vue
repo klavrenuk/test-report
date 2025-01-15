@@ -1,9 +1,55 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+
+import { useUser } from "@/stores/user";
+
+import AppHeader from "@/components/header/AppHeader.vue";
+
+const userStore = useUser();
+const router = useRouter();
+const route = useRoute();
+
+const isShowPage = ref<boolean>(false);
+
+const authPages = ["/login", "/recovery"];
+
+const isShowHeader = computed(() => !isAuthPage());
+
+const isAuthPage = () => {
+  if (!authPages.includes(route.path) && !userStore.getUser) {
+    return false;
+  }
+
+  return true;
+};
+
+const checkAuth = () => {
+  console.log("userStore", userStore.getUser);
+
+  if (!isAuthPage()) {
+    router.push("/login");
+  }
+
+  isShowPage.value = true;
+};
+
+onMounted(() => {
+  checkAuth();
+});
+</script>
 
 <template>
-  <main class="app-main">
-    <router-view />
-  </main>
+  <a-layout v-if="isShowPage">
+    <a-layout-header v-if="isShowHeader">
+      <a-flex justify="end" align="middle">
+        <AppHeader />
+      </a-flex>
+    </a-layout-header>
+    <a-layout-content>
+      <router-view />
+    </a-layout-content>
+  </a-layout>
 </template>
 
 <style lang="scss">
