@@ -43,17 +43,31 @@ onMounted(() => {
 
 <template>
   <a-layout v-if="isShowPage">
-    <a-layout-header v-if="isShowHeader">
+    <a-layout-header v-if="isShowHeader" class="app-layout-header">
       <a-flex justify="end" align="middle">
         <AppHeader />
       </a-flex>
     </a-layout-header>
     <a-layout-content>
-      <router-view />
+      <main class="app-main">
+        <router-view />
+      </main>
     </a-layout-content>
   </a-layout>
 </template>
 
 <style lang="scss">
 @import "@/assets/styles/app.scss";
+
+.app-layout-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff !important;
+}
+
+.app-main {
+  padding: 0 1rem;
+  width: 100%;
+  max-width: 1200px;
+}
 </style>

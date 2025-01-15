@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 
-import type { Column } from "@/types/table";
 import type { ReportItem } from "@/types/reports";
 import { columnsReports } from "@/constants/reports";
 import { MOCSReports } from "@/mocs/reports";
-import { DatePicker } from "ant-design-vue";
 
 const tableData = ref<ReportItem[]>([]);
 const dateRange = ref<[Date | null, Date | null]>([null, null]);
 
 const filteredData = computed(() => {
+  if (!dateRange.value) {
+    return MOCSReports;
+  }
+
   const [startDate, endDate] = dateRange.value;
 
   if (!startDate || !endDate) {
-    return tableData.value; // Если интервал не выбран, возвращаем все данные
+    return tableData.value;
   }
 
   return tableData.value.filter((item) => {
@@ -49,4 +51,10 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.reports-view {
+  &__filters {
+    margin-bottom: 2rem;
+  }
+}
+</style>

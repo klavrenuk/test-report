@@ -3,7 +3,7 @@ import type { ReportItem } from "@/types/reports";
 export const MOCSReports: ReportItem[] = [
   {
     id: 1,
-    date: "2024-11-01",
+    date: "2025-01-11",
     transactionAmount: 45,
     transactionType: "Purchase",
     userId: 23,
@@ -21,7 +21,7 @@ export const MOCSReports: ReportItem[] = [
   },
   {
     id: 3,
-    date: "2024-03-10",
+    date: "2025-02-10",
     transactionAmount: 67,
     transactionType: "Purchase",
     userId: 12,
@@ -30,7 +30,7 @@ export const MOCSReports: ReportItem[] = [
   },
   {
     id: 4,
-    date: "2024-04-25",
+    date: "2024-11-25",
     transactionAmount: 88,
     transactionType: "Purchase",
     userId: 56,
