@@ -19,6 +19,10 @@ const isShowHeader = computed(() => !isAuthPage());
 const isAuthPage = () => authPages.includes(route.fullPath);
 
 const checkAuth = () => {
+  console.log("isAuthPage", isAuthPage());
+  console.log("userStore.getUser", userStore.getUser);
+  console.log("route.fullPath", route.fullPath);
+
   if (isAuthPage()) {
     if (userStore.getUser) {
       router.push("/");
@@ -33,7 +37,7 @@ const checkAuth = () => {
 };
 
 onMounted(() => {
-  checkAuth();
+  isShowPage.value = true;
 });
 </script>
 

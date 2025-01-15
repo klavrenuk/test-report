@@ -64,7 +64,7 @@ const onSubmitFailed = (err: any) => {
 </script>
 
 <template>
-  <div class="login-view">
+  <div class="login-view auth-page">
     <AuthContent title="Вход в систему ">
       <a-form
         :model="formState"
@@ -124,13 +124,6 @@ const onSubmitFailed = (err: any) => {
 
 <style scoped lang="scss">
 .login-view {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #e6f1ff;
-
   &__recovery {
     text-align: right;
   }

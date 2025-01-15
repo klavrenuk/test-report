@@ -1,78 +1,124 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { notification } from "ant-design-vue";
+
+import { RecoveryStateLogin, RecoveryStatePassword } from "@/types/auth";
 
 import AuthContent from "@/components/auth/AuthContent.vue";
 
-interface FormState {
-  username: string;
-  password: string;
-  remember: boolean;
-}
+const router = useRouter();
 
-const formState = reactive<FormState>({
-  username: "",
-  password: "",
-  remember: true,
+const step = ref<string>("login");
+
+const formStateLogin = reactive<RecoveryStateLogin>({
+  login: "",
 });
 
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
+const formStatePassword = reactive<RecoveryStatePassword>({
+  password: "",
+});
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
+const handleSubmit = () => {
+  try {
+    switch (step.value) {
+      case "login":
+        if (formStateLogin.login) {
+          step.value = "password";
+        }
+        break;
+
+      case "password":
+        if (
+          formStatePassword.password &&
+          formStatePassword.password.length >= 6
+        ) {
+          router.push("/login");
+        }
+        break;
+    }
+  } catch (err) {
+    console.error(err);
+
+    notification({
+      message: "Ошибка",
+      description: "Попробуйте еще раз",
+      placement: "topRight",
+    });
+  }
 };
 </script>
 
 <template>
-  <div class="recovery-view">
+  <div class="recovery-view auth-page">
     <AuthContent title="Восстановление пароля">
       <a-form
-        :model="formState"
-        name="basic"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
+        :model="formStateLogin"
+        name="login"
         autocomplete="off"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed"
+        layout="vertical"
+        v-if="step === 'login'"
+        @finish="handleSubmit"
       >
         <a-form-item
-          label="Номер телефона"
-          name="username"
+          label="Логин"
+          name="login"
           :rules="[{ required: true, message: 'Заполните логин!' }]"
         >
-          <a-input v-model:value="formState.username" />
+          <a-input
+            v-model:value="formStateLogin.login"
+            size="large"
+            placeholder="Введите логин"
+          />
         </a-form-item>
 
-        <a-form-item
-          label="Код из смс"
-          name="username"
-          :rules="[{ required: true, message: 'Заполните логин!' }]"
-        >
-          <a-input v-model:value="formState.username" />
+        <a-form-item class="login-view__submit">
+          <a-button
+            type="primary"
+            @click="handleSubmit"
+            size="large"
+            block="true"
+            html-type="submit"
+            >Войти</a-button
+          >
         </a-form-item>
+      </a-form>
 
+      <a-form
+        name="password"
+        autocomplete="off"
+        layout="vertical"
+        :model="formStatePassword"
+        @finish="handleSubmit"
+        v-if="step === 'password'"
+      >
         <a-form-item
           label="Пароль"
           name="password"
-          :rules="[{ required: true, message: 'Пожалуйста заполните пароль!' }]"
+          class="login-view__form-item"
+          :rules="[
+            { required: true, message: 'Пожалуйста, заполните пароль!' },
+            { min: 6, message: 'Пароль должен быть не менее 6 символов' },
+          ]"
         >
-          <a-input-password v-model:value="formState.password" />
+          <a-input-password
+            v-model:value="formStatePassword.password"
+            size="large"
+            placeholder="Введите пароль"
+          />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-checkbox v-model:checked="formState.remember"
-            >Remember me</a-checkbox
+        <a-form-item class="login-view__submit">
+          <a-button
+            type="primary"
+            @click="handleSubmit"
+            size="large"
+            block="true"
+            html-type="submit"
+            >Войти</a-button
           >
-        </a-form-item>
-
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="primary" html-type="submit"> Подтвердить </a-button>
-          <a-button type="link"> Вернуться назад </a-button>
         </a-form-item>
       </a-form>
     </AuthContent>
   </div>
 </template>
-
-<style scoped lang="scss"></style>
